@@ -27,8 +27,6 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 - Determine pathology in 3 rat age groups
 
 ```{r}
-
-
 # Load libraries
 # Load first dataset "Total surviving neurons in 3 rat age groups"
 
@@ -37,10 +35,17 @@ library(here)
 library(tidyverse)
 library(dplyr)
 library(gganimate)
+```
 
+
+```{r}
 rat_age <- read.csv(here("Data", "rat_agetotalnuclei.csv"))
 
-head(rat_age)  
+head(rat_age)
+```
+
+
+```{r echo = FALSE, collapse=TRUE}
 
 
 plot <- ggplot(rat_age, aes(x = rat_age, y = total.nuclei)) +
@@ -52,9 +57,12 @@ plot <- ggplot(rat_age, aes(x = rat_age, y = total.nuclei)) +
   theme(axis.title.y = element_text(color = "maroon", size = 16))+
   theme(axis.title.x = element_text(color = "maroon", size = 16))+
   labs(title = "Total Nuclei by rat age")+
-  theme(plot.title = element_text(color = "maroon", size = 18, face = "bold"))
+  theme(plot.title = element_text(color = "maroon", size = 18, face = "bold"))+
   theme_dark()
+```
 
+
+```{r}
 #plot
 
 anim <- plot +
@@ -92,14 +100,14 @@ lobe<- ggplot(data = lobes, aes(x = Lobe.regions))+
   theme(axis.title.x = element_text(color = "maroon", size = 16))+
   xlab("5 lobe regions tested") +
   ylab("Total Nuclei found") +
-  ggtitle("Loss of neurons in p15 ataxic rats compared to non ataxic wildtypes")+
+  ggtitle("Loss of neurons in p15 ataxic rats")+
   theme(plot.title = element_text(color = "maroon", size = 18, face = "bold"))
 
 
 lobe
 
 ```
-```
+
 
 # Measuring soma size for mutant P10 vs wildtype
 
@@ -131,7 +139,7 @@ somaplot <- ggplot(somaround, aes(x = row_num, y = Wildtype.P10)) +
   theme(axis.title.y = element_text(color = "orange", size = 16))+
   theme(axis.title.x = element_text(color = "orange", size = 16))+
   scale_x_discrete(breaks = seq(0, nrow(somaround), by = 18))+
-  ggtitle("Scatterplot of soma size by wildtype and spastic p10 rats")+
+  ggtitle("Scatterplot of soma size in mutant p10 rats")+
   theme(plot.title = element_text(color = "orange", size = 20, face = "bold"))
 somaplot
 
@@ -145,7 +153,7 @@ animsoma <- ggplot(somaround, aes(x = row_num, y = Wildtype.P10)) +
   theme(axis.title.y = element_text(size = 16))+
   theme(axis.title.x = element_text(size = 16))+
   scale_x_discrete(breaks = seq(0, nrow(somaround), by = 20))+
-  ggtitle("Scatterplot of soma size by wildtype and spastic p10 rats")+
+  ggtitle("Scatterplot of soma size in mutant p10 rats")+
   theme(plot.title = element_text(color = "orange", size = 20, face = "bold"))
   
 
