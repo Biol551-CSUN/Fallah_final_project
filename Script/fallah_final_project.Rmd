@@ -1,0 +1,164 @@
+---
+title: "Finding the earliest pathology in Ataxia"
+author: "Roshan Fallah"
+date: "2023-05-09"
+output:
+  prettydoc::html_pretty:
+    theme: material
+    highlight: github
+  shiny::shinyApp:
+  html_document:
+    toc: true
+    toc_float: true   
+    animation: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+# Neurons die in an ataxic pathology 
+
+- Hereditary ataxia is an autosomal neurodegenerative disorder
+- Dr De Bellard's lab investigates the pathological mechanisms
+- No cure no treatment no isolated or mapped gene
+- Identify pathology using Hans Wistar rat models
+- Perfusion, cerebellum extraction & IHC
+- Determine pathology in 3 rat age groups
+
+```{r}
+
+
+# Load libraries
+# Load first dataset "Total surviving neurons in 3 rat age groups"
+
+library(ggplot2)
+library(here)
+library(tidyverse)
+library(dplyr)
+library(gganimate)
+
+rat_age <- read.csv(here("Data", "rat_agetotalnuclei.csv"))
+
+head(rat_age)  
+
+
+plot <- ggplot(rat_age, aes(x = rat_age, y = total.nuclei)) +
+  geom_col(aes(fill = factor(rat_age))) +
+  scale_fill_manual(values = rainbow(length(unique(rat_age$rat_age)))) +
+  scale_y_continuous(limits = c(0, 60))+
+  xlab("Rat age group") +
+  ylab("Total surviving nuclei") +
+  theme(axis.title.y = element_text(color = "maroon", size = 16))+
+  theme(axis.title.x = element_text(color = "maroon", size = 16))+
+  labs(title = "Total Nuclei by rat age")+
+  theme(plot.title = element_text(color = "maroon", size = 18, face = "bold"))
+  theme_dark()
+
+#plot
+
+anim <- plot +
+  transition_states(total.nuclei, transition_length = 2, state_length = 1) +
+  enter_fade() +
+  exit_fade()
+
+
+animate(anim)  
+
+```
+
+
+# Hypotheses for determining earliest pathology
+
+- There are pathological changes prior to P15
+- Use IHC to count neurons in 5 cerebellar lobes
+- loss of purkinje cells (neurons) expected in P10 rats 
+
+```{r}
+
+### Loading 2nd dataset neuronal loss in 5 lobes
+
+lobes <- read.csv(here("Data", "Neuronal_loss_5_lobes.csv"))
+
+#glimpse(lobes)
+
+head(lobes)
+
+lobe<- ggplot(data = lobes, aes(x = Lobe.regions))+
+  geom_col(aes(y = WT.total.nuclei, fill = "WT"), position = position_dodge(width = 0.9)) +
+  geom_col(aes(y = SP.total.nuclei, fill = "SP"), position = position_dodge(width = 0.9)) +
+  scale_fill_manual(values = c("maroon", "blue"), name = "Spastic & Wildtype") +
+  theme(axis.title.y = element_text(color = "maroon", size = 16))+
+  theme(axis.title.x = element_text(color = "maroon", size = 16))+
+  xlab("5 lobe regions tested") +
+  ylab("Total Nuclei found") +
+  ggtitle("Loss of neurons in p15 ataxic rats compared to non ataxic wildtypes")+
+  theme(plot.title = element_text(color = "maroon", size = 18, face = "bold"))
+
+
+lobe
+
+```
+```
+
+# Measuring soma size for mutant P10 vs wildtype
+
+- Using IHC and fluorescent microscopy to measure purkinje cells
+- Looking for a reduction in soma size in mutant P10 HW rats
+
+
+```{r}
+
+# Loading 3rd dataset for P10 rat soma size
+
+soma_size <- read.csv(here("Data", "p10_soma_size.csv"))
+
+
+soma_rounded <- round(soma_size, digits = 0)  ## rounding all values in both columns
+
+#soma_rounded
+
+head(soma_rounded)
+
+somaround <- soma_rounded %>% rownames_to_column(var = "row_num") # using dplyr to add column with row numbers
+
+somaplot <- ggplot(somaround, aes(x = row_num, y = Wildtype.P10)) + 
+  geom_point(aes(color = "Wildtype"), size = 3) + 
+  geom_point(aes(y = Spastic.P10, color = "Spastic"), shape = 15, fill = "red", size = 4) +
+  scale_color_manual(values = c("Wildtype" = "blue", "Spastic" = "red")) +
+  labs(x = "observation no. of measured neurons", y = "Diameter of soma (μm)", color = "red")+
+  theme_gray()+
+  theme(axis.title.y = element_text(color = "orange", size = 16))+
+  theme(axis.title.x = element_text(color = "orange", size = 16))+
+  scale_x_discrete(breaks = seq(0, nrow(somaround), by = 18))+
+  ggtitle("Scatterplot of soma size by wildtype and spastic p10 rats")+
+  theme(plot.title = element_text(color = "orange", size = 20, face = "bold"))
+somaplot
+
+
+animsoma <- ggplot(somaround, aes(x = row_num, y = Wildtype.P10)) + 
+  geom_point(aes(color = "Wildtype"), size = 5) + 
+  geom_point(aes(y = Spastic.P10, color = "Spastic"), shape = 17, fill = "red", size = 7) +
+  scale_color_manual(values = c("Wildtype" = "blue", "Spastic" = "red")) +
+  labs(x = "observation no. of measured neurons", y = "Diameter of soma (μm)", color = "red") +
+  theme_gray()+
+  theme(axis.title.y = element_text(size = 16))+
+  theme(axis.title.x = element_text(size = 16))+
+  scale_x_discrete(breaks = seq(0, nrow(somaround), by = 20))+
+  ggtitle("Scatterplot of soma size by wildtype and spastic p10 rats")+
+  theme(plot.title = element_text(color = "orange", size = 20, face = "bold"))
+  
+
+animated <- animsoma +
+  transition_time(Spastic.P10) +
+  ease_aes('linear')
+animated
+
+
+```
+
+# Discussion
+
+- hypotheses supported pathology seen in P10 rats
+- Further testing on P10 to reinforce findings
+- Future experiments on <P7
