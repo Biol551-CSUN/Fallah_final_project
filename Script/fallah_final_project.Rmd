@@ -52,17 +52,15 @@ plot <- ggplot(rat_age, aes(x = rat_age, y = total.nuclei)) +
   geom_col(aes(fill = factor(rat_age))) +
   scale_fill_manual(values = rainbow(length(unique(rat_age$rat_age)))) +
   scale_y_continuous(limits = c(0, 60))+
-  xlab("Rat age group") +
-  ylab("Total surviving nuclei") +
+  xlab("Rat age group")+
+  ylab("Total surviving nuclei")+
   theme(axis.title.y = element_text(color = "maroon", size = 16))+
   theme(axis.title.x = element_text(color = "maroon", size = 16))+
   labs(title = "Total Nuclei by rat age")+
   theme(plot.title = element_text(color = "maroon", size = 18, face = "bold"))+
   theme_dark()
-```
 
 
-```{r}
 #plot
 
 anim <- plot +
@@ -150,8 +148,8 @@ animsoma <- ggplot(somaround, aes(x = row_num, y = Wildtype.P10)) +
   scale_color_manual(values = c("Wildtype" = "blue", "Spastic" = "red")) +
   labs(x = "observation no. of measured neurons", y = "Diameter of soma (μm)", color = "red") +
   theme_gray()+
-  theme(axis.title.y = element_text(size = 16))+
-  theme(axis.title.x = element_text(size = 16))+
+  theme(axis.title.y = element_text(color = "orange", size = 16))+
+  theme(axis.title.x = element_text(color = "orange", size = 16))+
   scale_x_discrete(breaks = seq(0, nrow(somaround), by = 20))+
   ggtitle("Scatterplot of soma size in mutant p10 rats")+
   theme(plot.title = element_text(color = "orange", size = 20, face = "bold"))
