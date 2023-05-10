@@ -1,6 +1,6 @@
 # Roshan Fallah's Final independent project
 
-** Background
+* Background
 
 This project uses data from my Master's thesis.
 
@@ -13,7 +13,7 @@ In this type of investigation, cell counts and soma size analyses are integral m
 The 3 datasets used in this repository contain a small group of values which represent totals and averages of several hundred samples. 
 These experiments were carried out on both wildtype control rats and mutant ataxic rats.
 
-** File structure
+* File structure
 
 Data folder - 3 files
 
