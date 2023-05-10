@@ -15,13 +15,13 @@ These experiments were carried out on both wildtype control rats and mutant atax
 
 **File structure**
 
-*Data folder - 3 files
+*Data folder - 3 files*
 
 1. Neuronal_loss_5_lobes
 2. P10_soma_size
 3. rat_agetotalnuclei
 
 
-*Script folder - 2 files
+*Script folder - 2 files*
 
 fallah_final_project.html & .Rmd
