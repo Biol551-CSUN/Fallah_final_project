@@ -21,6 +21,7 @@ Data folder - 3 files
 2. P10_soma_size
 3. rat_agetotalnuclei
 
-Script - 2 file
+
+Script folder - 2 files
 
 fallah_final_project.html & .Rmd
